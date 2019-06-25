@@ -1,26 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Selection from './Selection';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const photoUrls = () => {
+  let names = []
+  for (let i = 1; i < 48; i++) {
+    names.push(`field-day-tv-${i}.jpg`)
+  }
+  return names
+}
+
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      selections: []
+    }
+  }
+  render() {
+    return (
+      <div className="App">
+        {
+          photoUrls().map(url => <Selection
+            key={url}
+            disabled={this.state.selections.length === 3}
+            onSelect={() => this.setState({ selections: [...this.state.selections, url]})}
+            src={url}
+            selected={this.state.selections.find(s => s === url)}
+          />)
+        }
+
+        <button onClick={() => console.log('voted')}>Vote!</button>
+      </div>
+    );
+  }
 }
 
 export default App;
